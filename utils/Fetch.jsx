@@ -25,7 +25,6 @@ export const useFetchJSON = (url, op, refetch) => {
       };
 
       const resp = await fetch(defaultURL + url, options);
-      console.log(defaultURL + url)
       if (resp.status >= 400) {
         if (resp.status === 401) {
           console.log("Bad Response");
