@@ -23,6 +23,7 @@ export const useFetchJSON = (url, op, refetch) => {
         Accept: "application/json",
         ...options.headers
       };
+      console.log(defaultURL + url)
 
       const resp = await fetch(defaultURL + url, options);
       if (resp.status >= 400) {
