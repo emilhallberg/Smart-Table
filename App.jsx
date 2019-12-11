@@ -1,22 +1,20 @@
 import React from 'react';
-import Home from "./views/Home";
-import {createStackNavigator} from 'react-navigation-stack';
-import {createAppContainer} from 'react-navigation';
-import Table from "./components/Table";
+import { NavigationNativeContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Home from './views/Home';
+import Table from './components/Table';
 
+const Stack = createStackNavigator();
 
-const Navigator = createStackNavigator(
-  {
-    Home: {screen: Home},
-    Table: {screen: Table}
-  },
-  {
-    initialRouteName: 'Home'
-  }
-);
-
-const App = createAppContainer(Navigator);
+const App = () => {
+  return (
+    <NavigationNativeContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={Home} options={{ title: 'Smart Table' }} />
+        <Stack.Screen name="Table" component={Table} options={({ route }) => ({ title: route.params.name })} />
+      </Stack.Navigator>
+    </NavigationNativeContainer>
+  );
+};
 
 export default App;
-
-

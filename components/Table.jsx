@@ -1,10 +1,20 @@
-import React from 'react'
-import {View, Text} from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+const { create } = StyleSheet;
 
-const Table = () => {
+const styles = create({
+  container: {
+    flex: 1
+  }
+});
+
+const Table = ({ route }) => {
+  const { id, data } = route.params;
+
   return (
-    <View>
-      <Text>Test</Text>
+    <View style={styles.container}>
+      <Text>{id}</Text>
+      <Text>{JSON.stringify(data)}</Text>
     </View>
   );
 };

@@ -1,10 +1,11 @@
-import React, {useState, useCallback} from 'react';
-import {StyleSheet, RefreshControl, ScrollView, FlatList, SafeAreaView} from 'react-native';
-import Sensor from "../components/Sensor";
-import { wait } from "../utils/Library";
-import Constants from "expo-constants";
+import React, { useState, useCallback } from 'react';
+import { StyleSheet, RefreshControl, FlatList, SafeAreaView } from 'react-native';
+import Sensor from '../components/Sensor';
+import { wait } from '../utils/Library';
+import Constants from 'expo-constants';
+const { create } = StyleSheet;
 
-const styles = StyleSheet.create({
+const styles = create({
   safe: {
     flex: 1,
     marginTop: Constants.statusBarHeight
@@ -12,12 +13,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 30,
-    flexDirection: "column",
-    backgroundColor: "red"
+    flexDirection: 'column',
+    backgroundColor: 'red'
   }
 });
 
-const Home = () => {
+const Home = ({ navigation }) => {
   const [refreshing, setRefreshing] = useState(false);
   const [refetch, setRefetch] = useState(false);
 
@@ -48,22 +49,17 @@ const Home = () => {
     { name: 'C54115', id: 'a81758fffe03BD18' }
   ];
 
-
   return (
     <SafeAreaView style={styles.safe}>
       <FlatList
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        data={
-          sensors
-        }
-        renderItem={({item}) => <Sensor key={item.id} id={item.id} name={item.name} refetch={refetch}/>}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        data={sensors}
+        renderItem={({ item }) => (
+          <Sensor key={item.id} id={item.id} name={item.name} refetch={refetch} navigation={navigation} />
+        )}
       />
     </SafeAreaView>
   );
 };
 
 export default Home;
-
-

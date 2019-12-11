@@ -23,12 +23,11 @@ export const useFetchJSON = (url, op, refetch) => {
         Accept: "application/json",
         ...options.headers
       };
-      console.log(defaultURL + url)
 
       const resp = await fetch(defaultURL + url, options);
       if (resp.status >= 400) {
         if (resp.status === 401) {
-          console.log("Bad Response");
+          setError("Unauthorized.")
         }
         setError(resp.status);
         setLoading(false);
