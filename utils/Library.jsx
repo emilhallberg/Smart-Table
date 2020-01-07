@@ -15,3 +15,5 @@ export const wait = timeout => {
     setTimeout(resolve, timeout);
   });
 };
+
+export const isOccupied = (data) => data.reduce((s, e) => s + parseInt(e.dd.body, 10), 0) > 0;

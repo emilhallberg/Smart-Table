@@ -1,20 +1,20 @@
 import React, { useState, useCallback } from 'react';
-import { StyleSheet, RefreshControl, FlatList, SafeAreaView } from 'react-native';
+import { StyleSheet, RefreshControl, FlatList, SafeAreaView, Button } from 'react-native';
 import Sensor from '../components/Sensor';
 import { wait } from '../utils/Library';
-import Constants from 'expo-constants';
+import Notify from '../components/Notify';
+import Colors from '../utils/Colors';
 const { create } = StyleSheet;
 
 const styles = create({
   safe: {
     flex: 1,
-    marginTop: Constants.statusBarHeight
+    backgroundColor: Colors.background
   },
   container: {
     flex: 1,
     marginTop: 30,
-    flexDirection: 'column',
-    backgroundColor: 'red'
+    flexDirection: 'column'
   }
 });
 
@@ -58,6 +58,8 @@ const Home = ({ navigation }) => {
           <Sensor key={item.id} id={item.id} name={item.name} refetch={refetch} navigation={navigation} />
         )}
       />
+      <Button title="Välj byggnad" onPress={() => navigation.navigate('Buildings')} />
+      <Notify navigation={navigation} />
     </SafeAreaView>
   );
 };
