@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<head>
+  <meta name="viewport" id="vp" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
+  <meta charset="utf-8" />
+
+  <link rel="stylesheet" href="https://api.mazemap.com/js/v2.0.19/mazemap.min.css" />
+  <script type="text/javascript" src="https://api.mazemap.com/js/v2.0.19/mazemap.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+  <title>Smart Table</title>
+</head>
+<body>
+  <div id="map" class="mazemap"></div>
+
+  <script>
+    const myMap = new Mazemap.Map({
+      container: 'map',
+      center: { lng: 20.305446, lat: 63.820275 },
+      zoom: 15,
+      scrollZoom: true,
+      doubleClickZoom: true,
+      touchZoomRotate: true,
+      zLevelControl: true
+    });
+
+    const sensors = [
+      { name: 'L54304', id: 'a81758fffe03BD19', lng: 20.308461, lat: 63.820012, level: 5 },
+      { name: 'L54204', id: 'a81758fffe03BD12', lng: 20.308413, lat: 63.820013, level: 5 },
+      { name: 'L54004', id: 'a81758fffe03BD14', lng: 20.308365, lat: 63.820014, level: 5 },
+      { name: 'L53804', id: 'a81758fffe03BD15', lng: 20.308316, lat: 63.820014, level: 5 },
+      { name: 'L53504', id: 'a81758fffe03BD1D', lng: 20.308197, lat: 63.820015, level: 5 },
+      { name: 'L53104', id: 'a81758fffe03BD20', lng: 20.308096, lat: 63.820015, level: 5 },
+      { name: 'L54515', id: 'a81758fffe03BD10', lng: 20.308502, lat: 63.819878, level: 5 },
+      { name: 'L54315', id: 'a81758fffe03BD17', lng: 20.308456, lat: 63.819878, level: 5 },
+      { name: 'L54215', id: 'a81758fffe03BD1B', lng: 20.308408, lat: 63.819878, level: 5 },
+      { name: 'L54015', id: 'a81758fffe03BD1C', lng: 20.30836, lat: 63.819878, level: 5 },
+      { name: 'L53815', id: 'a81758fffe03BD11', lng: 20.308311, lat: 63.819878, level: 5 },
+      { name: 'L53015', id: 'a81758fffe038751', lng: 20.308067, lat: 63.81988, level: 5 },
+      { name: 'C53503', id: 'a81758fffe03BD1A', lng: 20.308191, lat: 63.819571, level: 5 },
+      { name: 'C53703', id: 'a81758fffe03BD1F', lng: 20.308252, lat: 63.81957, level: 5 },
+      { name: 'C53903', id: 'a81758fffe03BD13', lng: 20.308314, lat: 63.81957, level: 5 },
+      { name: 'C53815', id: 'a81758fffe03BD1E', lng: 20.308308, lat: 63.819435, level: 5 },
+      { name: 'C53515', id: 'a81758fffe03BD16', lng: 20.308185, lat: 63.819436, level: 5 },
+      { name: 'C54115', id: 'a81758fffe03BD18', lng: 20.30837, lat: 63.819435, level: 5 }
+    ];
+
+    const hostname = 'https://daresay-dev.eu-gb.cf.appdomain.cloud';
+    const defaultURL = `${hostname}/innovativa`;
+
+    myMap.on('load', () => {
+      sensors.map(e => {
+        return new Mazemap.MazeMarker({
+          color: 'MazeBlue',
+          size: 25,
+          zLevel: e.level
+        })
+          .setLngLat({ lng: e.lng, lat: e.lat })
+          .addTo(myMap)
+          .on('click', () => {
+            window.location.href = `exp://130.239.217.91:19000/--/Table?id=${e.id}&name=${e.name}`;
+          });
+      });
+    });
+  </script>
+</body>

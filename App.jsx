@@ -1,6 +1,7 @@
-import React from 'react';
-import { NavigationNativeContainer } from '@react-navigation/native';
+import React, { useRef, useState, useEffect } from 'react';
+import { NavigationNativeContainer, useLinking } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { Linking } from 'expo';
 import Home from './views/Home';
 import Buildings from './views/Buildings';
 import Table from './views/Table';
@@ -9,20 +10,60 @@ import Colors from './utils/Colors';
 
 const Stack = createStackNavigator();
 
-const navopt = {
+const navigationOptions = {
   title: '',
   headerBackTitle: 'Tillbaka',
   headerTintColor: Colors.primary,
   headerStyle: { backgroundColor: Colors.background }
 };
 
+const prefix = Linking.makeUrl('/');
+
 const App = () => {
+  const ref = useRef(null);
+
+  const { getInitialState } = useLinking(ref, {
+    prefixes: [prefix],
+    config: {
+      Home: {
+        path: 'home'
+      },
+      Buildings: {
+        path: 'buildings'
+      },
+      Notifications: {
+        path: 'notifications'
+      },
+      Table: {
+        path: 'table?id=:id?name=:name'
+      }
+    }
+  });
+
+  const [isReady, setIsReady] = React.useState(false);
+  const [initialState, setInitialState] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      let state = null;
+      try {
+        state = await getInitialState();
+      } catch (e) {}
+      if (state) setInitialState(state);
+      setIsReady(true);
+    })();
+  }, [getInitialState]);
+
+  if (!isReady) {
+    return null;
+  }
+
   return (
-    <NavigationNativeContainer>
+    <NavigationNativeContainer initialState={initialState} ref={ref}>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={Home} options={navopt} />
-        <Stack.Screen name="Table" component={Table} options={navopt} />
-        <Stack.Screen name="Buildings" component={Buildings} options={navopt} />
+        <Stack.Screen name="Home" component={Home} options={navigationOptions} />
+        <Stack.Screen name="Table" component={Table} options={navigationOptions} />
+        <Stack.Screen name="Buildings" component={Buildings} options={navigationOptions} />
         <Stack.Screen
           name="Notifications"
           component={Notifications}
