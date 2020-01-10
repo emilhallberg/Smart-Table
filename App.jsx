@@ -17,6 +17,13 @@ const navigationOptions = {
   headerStyle: { backgroundColor: Colors.background }
 };
 
+const homeNavigationOptions = {
+  title: 'Smart Table',
+  headerBackTitle: 'Tillbaka',
+  headerTintColor: Colors.primary,
+  headerStyle: { backgroundColor: Colors.background }
+}
+
 const prefix = Linking.makeUrl('/');
 
 const App = () => {
@@ -61,7 +68,7 @@ const App = () => {
   return (
     <NavigationNativeContainer initialState={initialState} ref={ref}>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={Home} options={navigationOptions} />
+        <Stack.Screen name="Home" component={Home} options={homeNavigationOptions} />
         <Stack.Screen name="Table" component={Table} options={navigationOptions} />
         <Stack.Screen name="Buildings" component={Buildings} options={navigationOptions} />
         <Stack.Screen
