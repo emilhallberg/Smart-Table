@@ -1,9 +1,8 @@
-import React, { useState, useCallback } from 'react';
-import { StyleSheet, RefreshControl, FlatList, SafeAreaView, Button } from 'react-native';
-import Sensor from '../components/Sensor';
-import { wait } from '../utils/Library';
+import React, { useState } from 'react';
+import { StyleSheet, SafeAreaView } from 'react-native';
 import Notify from '../components/Notify';
 import Colors from '../utils/Colors';
+import Mazemap from '../components/Mazemap';
 const { create } = StyleSheet;
 
 const styles = create({
@@ -19,39 +18,16 @@ const styles = create({
 });
 
 const Home = ({ navigation }) => {
-  const [refreshing, setRefreshing] = useState(false);
-  const [refetch, setRefetch] = useState(false);
-
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    setRefetch(v => !v);
-    wait(2000).then(() => setRefreshing(false));
-  }, [refreshing]);
-
-  const sensors = [
-    { name: 'L54304', id: 'a81758fffe03BD19' },
-    { name: 'L54204', id: 'a81758fffe03BD12' },
-    { name: 'L54004', id: 'a81758fffe03BD14' },
-    { name: 'L53804', id: 'a81758fffe03BD15' },
-    { name: 'L53504', id: 'a81758fffe03BD1D' },
-    { name: 'L53104', id: 'a81758fffe03BD20' },
-    { name: 'L54515', id: 'a81758fffe03BD10' },
-    { name: 'L54315', id: 'a81758fffe03BD17' },
-    { name: 'L54215', id: 'a81758fffe03BD1B' },
-    { name: 'L54015', id: 'a81758fffe03BD1C' },
-    { name: 'L53815', id: 'a81758fffe03BD11' },
-    { name: 'L53015', id: 'a81758fffe038751' },
-    { name: 'C53503', id: 'a81758fffe03BD1A' },
-    { name: 'C53703', id: 'a81758fffe03BD1F' },
-    { name: 'C53903', id: 'a81758fffe03BD13' },
-    { name: 'C53815', id: 'a81758fffe03BD1E' },
-    { name: 'C53515', id: 'a81758fffe03BD16' },
-    { name: 'C54115', id: 'a81758fffe03BD18' }
-  ];
-
   return (
     <SafeAreaView style={styles.safe}>
-      <FlatList
+      <Mazemap />
+      <Notify navigation={navigation} />
+    </SafeAreaView>
+  );
+};
+
+/*
+<FlatList
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         data={sensors}
         renderItem={({ item }) => (
@@ -59,9 +35,6 @@ const Home = ({ navigation }) => {
         )}
       />
       <Button title="Välj byggnad" onPress={() => navigation.navigate('Buildings')} />
-      <Notify navigation={navigation} />
-    </SafeAreaView>
-  );
-};
+*/
 
 export default Home;
