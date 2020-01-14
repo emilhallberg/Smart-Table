@@ -16,7 +16,7 @@ const styles = create({
 const Home = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.safe}>
-      <Mazemap />
+      <Mazemap navigation={navigation} />
       <BottomBar navigation={navigation} />
       <Notify navigation={navigation} />
     </SafeAreaView>

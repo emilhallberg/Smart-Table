@@ -7,6 +7,7 @@ import Buildings from './views/Buildings';
 import Table from './views/Table';
 import Notifications from './views/Notifications';
 import Colors from './utils/Colors';
+import { Button, Linking as Link } from 'react-native';
 
 const Stack = createStackNavigator();
 
@@ -17,12 +18,19 @@ const navigationOptions = {
   headerStyle: { backgroundColor: Colors.background }
 };
 
-const homeNavigationOptions = {
-  title: 'Smart Table',
+const tableNavigationOptions = {
+  title: '',
   headerBackTitle: 'Tillbaka',
   headerTintColor: Colors.primary,
   headerStyle: { backgroundColor: Colors.background }
-}
+};
+
+const homeNavigationOptions = {
+  title: 'Smart Table',
+  headerBackTitle: '',
+  headerTintColor: Colors.primary,
+  headerStyle: { backgroundColor: Colors.background }
+};
 
 const prefix = Linking.makeUrl('/');
 
@@ -69,7 +77,19 @@ const App = () => {
     <NavigationNativeContainer initialState={initialState} ref={ref}>
       <Stack.Navigator>
         <Stack.Screen name="Home" component={Home} options={homeNavigationOptions} />
-        <Stack.Screen name="Table" component={Table} options={navigationOptions} />
+        <Stack.Screen
+          name="Table"
+          component={Table}
+          options={{
+            title: '',
+            headerBackTitle: 'Tillbaka',
+            headerTintColor: Colors.primary,
+            headerStyle: { backgroundColor: Colors.background },
+            headerLeft: () => (
+              <Button onPress={() => Link.openURL('exp://130.239.216.138:19000/--/Home')} title="< Tillbaka" />
+            )
+          }}
+        />
         <Stack.Screen name="Buildings" component={Buildings} options={navigationOptions} />
         <Stack.Screen
           name="Notifications"

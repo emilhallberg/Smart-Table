@@ -7,14 +7,15 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   ScrollView,
-  RefreshControl
+  RefreshControl,
+  Button
 } from 'react-native';
 import Circle from '../components/Circle';
-const { create } = StyleSheet;
 import Colors from '../utils/Colors';
 import { formatDate, isOccupied, wait } from '../utils/Library';
 import Notify from '../components/Notify';
 import { useFetchJSON } from '../utils/Fetch';
+const { create } = StyleSheet;
 
 const styles = create({
   scrollView: {
@@ -78,8 +79,6 @@ const Table = ({ route, navigation }) => {
     wait(2000).then(() => setRefreshing(false));
   }, [refreshing]);
 
-  console.log(navigation);
-
   const { loading, error, data } = useFetchJSON(
     `/${id}/${formatDate(today)}/${formatDate(tomorrow)}/${rows}/${apiKey}`,
     {},
@@ -87,7 +86,6 @@ const Table = ({ route, navigation }) => {
   );
 
   useEffect(() => {
-    console.log(occupied)
     if (data) setOccupied(isOccupied(data));
   }, [data]);
 
@@ -155,63 +153,5 @@ const Table = ({ route, navigation }) => {
     </ScrollView>
   );
 };
-
-/*
-const Table = ({ route, navigation }) => {
-  const [notify, setNotify] = useState(false);
-  const { id, data, name } = route.params;
-  const time = data.map(item => {
-    return item.time;
-  });
-  const temperature = data.map(item => {
-    return item.dd.temperature;
-  });
-  const humidity = data.map(item => {
-    return item.dd.humidity;
-  });
-
-  const occupied = isOccupied(data);
-
-  const circleData = {
-    left: { label: 'Fuktighet', value: humidity, color: Colors.normal },
-    right: { label: 'Temperatur', value: temperature, color: Colors.primary },
-    bottom: {
-      label: `${occupied ? 'Upptaget' : 'Ledigt'}`,
-      value: null,
-      color: occupied ? Colors.negative : Colors.positive
-    }
-  };
-
-  const setupNotification = () => {
-    setNotify(v => !v);
-  };
-
-  const text = occupied ? 'Bordet är för tillfället ledigt.' : 'Någon/Några sitter vid bordet.';
-
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{name}</Text>
-      <Text style={styles.subTitle}>{time}</Text>
-      <View style={styles.circle}>
-        <Circle data={circleData} />
-      </View>
-      <Text style={styles.label}>{text}</Text>
-      <View style={styles.switch}>
-        <Text style={{ marginEnd: 10, fontSize: 12 }}>Skicka notis om bordet blir upptaget:</Text>
-        <Switch
-          value={notify}
-          onChange={setupNotification}
-          thumbColor={Colors.primary}
-          trackColor={{ false: Colors.normal, true: Colors.primary }}
-        />
-      </View>
-      <TouchableOpacity style={styles.button} onPress={() => alert('Inte implementerad ännu.')}>
-        <Text style={{ color: Colors.circleText }}>Visa vägbeskrivning</Text>
-      </TouchableOpacity>
-      <Notify navigation={navigation} />
-    </View>
-  );
-};
- */
 
 export default Table;

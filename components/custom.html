@@ -53,20 +53,56 @@
 
     const hostname = 'https://daresay-dev.eu-gb.cf.appdomain.cloud';
     const defaultURL = `${hostname}/innovativa`;
+    const apiKey = '139kTnm10ksR';
+    const rows = 1;
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const formatDate = date => {
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).length === 1 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+      const day = date.getDate().length === 1 ? `0${date.getDate()}` : date.getDate();
+
+      return `${year}:${month}:${day} 00:00:00`;
+    };
+
+    const isOccupied = data => data.reduce((s, e) => s + parseInt(e.dd.body, 10), 0) > 0;
+
+    const loadSensor = async e => {
+      (async () => {
+        let res;
+
+        const resp = await fetch(
+          defaultURL + `/${e.id}/${formatDate(today)}/${formatDate(tomorrow)}/${rows}/${apiKey}`
+        );
+        if (resp.status >= 400) {
+          if (resp.status === 401) {
+            console.log('Unauthorized.');
+          }
+          return;
+        }
+
+        if (resp.status !== 204) {
+          res = await resp.json();
+          const occupied = isOccupied(res);
+          console.log(occupied);
+          return new Mazemap.MazeMarker({
+            color: occupied ? '#D32D31' : '#1DA61D',
+            size: 25,
+            zLevel: e.level
+          })
+            .setLngLat({ lng: e.lng, lat: e.lat })
+            .addTo(myMap)
+            .on('click', () => {
+              window.location.href = `exp://130.239.216.138:19000/--/Table?id=${e.id}&name=${e.name}`;
+            });
+        }
+      })();
+    };
 
     myMap.on('load', () => {
-      sensors.map(e => {
-        return new Mazemap.MazeMarker({
-          color: 'MazeBlue',
-          size: 25,
-          zLevel: e.level
-        })
-          .setLngLat({ lng: e.lng, lat: e.lat })
-          .addTo(myMap)
-          .on('click', () => {
-            window.location.href = `exp://130.239.217.91:19000/--/Table?id=${e.id}&name=${e.name}`;
-          });
-      });
+      sensors.map(loadSensor);
     });
   </script>
 </body>
