@@ -86,7 +86,6 @@
         if (resp.status !== 204) {
           res = await resp.json();
           const occupied = isOccupied(res);
-          console.log(occupied);
           return new Mazemap.MazeMarker({
             color: occupied ? '#D32D31' : '#1DA61D',
             size: 25,
