@@ -86,7 +86,7 @@ const App = () => {
             headerTintColor: Colors.primary,
             headerStyle: { backgroundColor: Colors.background },
             headerLeft: () => (
-              <Button onPress={() => Link.openURL('exp://130.239.216.138:19000/--/Home')} title="< Tillbaka" />
+              <Button onPress={() => Link.openURL('exp://130.239.218.27:19000/--/Home')} title="< Tillbaka" />
             )
           }}
         />
